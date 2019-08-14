@@ -266,7 +266,7 @@ def get_rotation_offset(plate_id, centroid, shape=DEFAULT_IMAGE_SHAPE,
         translation_offset_pix = np.array(translation_offset) / FOCAL_SCALE / PIXEL_SIZE
         centroid -= translation_offset_pix
 
-    # Calculates the x/yFocal of the cetroid.
+    # Calculates the x/yFocal of the centroid.
 
     if img_centre is None:
         img_centre = shape / 2.
