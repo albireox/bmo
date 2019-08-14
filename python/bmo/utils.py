@@ -135,7 +135,7 @@ def get_camera_focal(plate_id, camera='center'):
     return (float(hole.xfocal), float(hole.yfocal))
 
 
-def get_centroid(image):
+def get_centroid(image, return_fwhm=False):
     """Uses PyGuide to return the brightest centroid in an array."""
 
     if PyGuide is None:
@@ -153,7 +153,13 @@ def get_centroid(image):
     centroids = stars[0]
     assert len(centroids) > 0, 'no centroids found.'
 
-    return centroids[0]
+    if not return_fwhm:
+        return centroids[0]
+
+    shape = PyGuide.StarShape.starShape(image, mask, stars[0][0].xyCtr, 100)
+    fwhm = shape.fwhm
+
+    return (centroids, fwhm)
 
 
 def get_translation_offset(centroid, shape=DEFAULT_IMAGE_SHAPE, img_centre=None):
@@ -319,7 +325,7 @@ def show_in_ds9(image, frame=1, ds9=None, zoom=None):
             raise ValueError('incorrect value for ds9 keyword: {0!r}'.format(ds9))
 
     try:
-        centroid = get_centroid(image)
+        centroid, fwhm = get_centroid(image, return_fwhm=True)
         xx, yy = centroid.xyCtr
         rad = centroid.rad
     except AssertionError:
@@ -341,7 +347,9 @@ def show_in_ds9(image, frame=1, ds9=None, zoom=None):
 
     if centroid:
         ds9.set('regions command {{circle({0}, {1}, {2}) # color=green}}'.format(xx, yy, rad))
-        return (xx, yy, rad)
+        ds9.set('regions command {{text({0}, {1}) # text="{2:.2f}" color=green}}'
+                .format(xx, yy + rad + 30, fwhm if fwhm else 0.0))
+        return (xx, yy, rad, fwhm)
 
     return None
 

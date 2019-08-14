@@ -41,9 +41,10 @@ def display_image(image, camera_type, actor, cmd):
         actor.writeToUsers('i', 'text="no centroid detected for '
                                 '{0}-axis camera."'.format(camera_type))
     else:
-        xx, yy, __ = centroid
+        xx, yy, __, fwhm = centroid
         actor.writeToUsers('d', 'text="{0}-axis camera centroid detected '
-                                'at ({1:.1f}, {2:.1f})"'.format(camera_type, xx, yy))
+                                'at ({1:.1f}, {2:.1f}) with fwhm {3:.2f}"'
+                                .format(camera_type, xx, yy, fwhm))
         actor.centroids[camera_type] = (xx, yy)
 
     return True
