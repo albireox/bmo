@@ -45,6 +45,7 @@ class BMOActor(BaseActor):
 
         self.cameras = {'on': None, 'off': None}
         self.centroids = {'on': None, 'off': None}
+        self.fwhm = {'on': None, 'off': None}
 
         self.controller = controller
 

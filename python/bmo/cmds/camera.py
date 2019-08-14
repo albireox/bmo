@@ -46,6 +46,7 @@ def display_image(image, camera_type, actor, cmd):
                                 'at ({1:.1f}, {2:.1f}) with fwhm {3:.2f}"'
                                 .format(camera_type, xx, yy, fwhm))
         actor.centroids[camera_type] = (xx, yy)
+        actor.fwhm[camera_type] = fwhm
 
     return True
 
@@ -125,6 +126,9 @@ def do_expose(actor, cmd, camera_type, one=False, subtract_background=True):
 
         image.set_hole_radec(camera_ra, camera_dec)
 
+        fwhm = actor.fwhm[camera_type]
+        fwhm = '{:.2f}'.format(fwhm) if fwhm else -999.
+
         extra_header = astropy.io.fits.Header(
             [('ALT', actor.tccActor.dev_state.tcc_pos[1], 'Telescope ALT'),
              ('AZ', actor.tccActor.dev_state.tcc_pos[0], 'Telescope AZ'),
@@ -132,7 +136,8 @@ def do_expose(actor, cmd, camera_type, one=False, subtract_background=True):
              ('CARTID', actor.tccActor.dev_state.instrumentNum, 'Cartridge ID'),
              ('PLATEID', actor.tccActor.dev_state.plate_id, 'Currently loaded plate'),
              ('CAMTYPE', camera_type + '-axis', 'Camera position (on/off-axis)'),
-             ('SECORIEN', actor.tccActor.dev_state.secOrient, 'Secondary orientation')])
+             ('SECORIEN', actor.tccActor.dev_state.secOrient, 'Secondary orientation'),
+             ('STARFWHM', fwhm, 'Star FWHM measurement')])
 
         image.header.extend(extra_header)
 
