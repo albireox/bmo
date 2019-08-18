@@ -43,7 +43,7 @@ def display_image(image, camera_type, actor, cmd):
     else:
         xx, yy, __, fwhm = centroid
         actor.writeToUsers('d', 'text="{0}-axis camera centroid detected '
-                                'at ({1:.1f}, {2:.1f}) with fwhm {3:.2f}"'
+                                'at ({1:.1f}, {2:.1f}) with fwhm {3:.2f} arcsec"'
                                 .format(camera_type, xx, yy, fwhm))
         actor.centroids[camera_type] = (xx, yy)
         actor.fwhm[camera_type] = fwhm
