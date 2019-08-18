@@ -127,7 +127,7 @@ def do_expose(actor, cmd, camera_type, one=False, subtract_background=True):
         image.set_hole_radec(camera_ra, camera_dec)
 
         fwhm = actor.fwhm[camera_type]
-        fwhm = '{:.2f}'.format(fwhm) if fwhm else -999.
+        fwhm = float('{:.2f}'.format(fwhm)) if fwhm else -999.
 
         extra_header = astropy.io.fits.Header(
             [('ALT', actor.tccActor.dev_state.tcc_pos[1], 'Telescope ALT'),
