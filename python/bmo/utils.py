@@ -141,7 +141,7 @@ def get_centroid(image, return_fwhm=False):
     if PyGuide is None:
         raise BMOError('PyGuide cannot be imported.')
 
-    mask = np.zeros(image.shape)
+    mask = np.zeros(image.shape, dtype=np.bool)
 
     # Masking to the right part of the image until we understand the origin of
     # the weird illumination pattern.
@@ -156,7 +156,8 @@ def get_centroid(image, return_fwhm=False):
     if not return_fwhm:
         return centroids[0]
 
-    shape = PyGuide.StarShape.starShape(image, mask, stars[0][0].xyCtr, 100)
+    shape = PyGuide.StarShape.starShape(image.astype(np.float32), mask,
+                                        stars[0][0].xyCtr, 100)
     fwhm = float(shape.fwhm)
 
     return (centroids, fwhm)
