@@ -158,7 +158,11 @@ def get_centroid(image, return_fwhm=False):
 
     shape = PyGuide.StarShape.starShape(image.astype(np.float32), mask,
                                         stars[0][0].xyCtr, 100)
-    fwhm = float(shape.fwhm) if shape.fwhm else -999.
+
+    if shape.fwhm:
+        fwhm = float(shape.fwhm) * PIXEL_SIZE * FOCAL_SCALE
+    else:
+        fwhm = -999.
 
     return (centroids[0], fwhm)
 

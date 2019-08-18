@@ -137,7 +137,7 @@ def do_expose(actor, cmd, camera_type, one=False, subtract_background=True):
              ('PLATEID', actor.tccActor.dev_state.plate_id, 'Currently loaded plate'),
              ('CAMTYPE', camera_type + '-axis', 'Camera position (on/off-axis)'),
              ('SECORIEN', actor.tccActor.dev_state.secOrient, 'Secondary orientation'),
-             ('STARFWHM', fwhm, 'Star FWHM measurement')])
+             ('STARFWHM', fwhm, 'Star FWHM measurement [arcsec]')])
 
         image.header.extend(extra_header)
 
